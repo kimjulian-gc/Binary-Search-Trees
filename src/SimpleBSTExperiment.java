@@ -40,6 +40,8 @@ public class SimpleBSTExperiment {
     removeExperiment(pen, example, "koala"); // middle?
     removeExperiment(pen, example, "civet"); // root?
 
+    pen.println("Testing iterator");
+    example.keys().forEachRemaining(key -> pen.println(key));
   } // main(String[])
 
 

@@ -241,8 +241,12 @@ public class SimpleBST<K, V> implements SimpleMap<K, V> {
       @Override
       public BSTNode<K, V> next() {
         checkInit();
-        // STUB
-        return null;
+        
+        BSTNode<K,V> outNode = stack.pop();
+        if (outNode.left != null) stack.push(outNode.left);
+        if (outNode.right != null) stack.push(outNode.right);
+
+        return outNode;
       } // next();
 
       void checkInit() {
