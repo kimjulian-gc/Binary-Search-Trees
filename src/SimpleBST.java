@@ -88,7 +88,8 @@ public class SimpleBST<K, V> implements SimpleMap<K, V> {
 
   @Override
   public V remove(K key) {
-    return null; // STUB
+    this.root = remove(this.root, key);
+    return this.cachedValue;
   } // remove(K)
 
   @Override
@@ -251,6 +252,50 @@ public class SimpleBST<K, V> implements SimpleMap<K, V> {
       return get(key, node.right);
     }
   } // get(K, BSTNode<K,V>)
+
+  BSTNode<K,V> remove (BSTNode<K,V> node, K key) {
+    if (node == null) {
+      // key doesn't exist
+      this.cachedValue = null;
+      return null;
+    }
+
+    this.cachedValue = node.value;
+    
+    // edit the node
+    int comp = comparator.compare(key, node.key);
+    if (comp == 0) {
+      // remove this node
+      if (node.left == null && node.right == null) return null;
+      if (node.left == null) return node.right;
+      if (node.right == null) return node.left;
+
+      // neither branch is empty, restructure the node
+      node.left = putRightmost(node.left, node.right);
+      return node.left;
+    }
+    if (comp < 0) {
+      // go left
+      node.left = remove(node.left, key);
+    }
+    if (comp > 0) {
+      // go right
+      node.right = remove(node.right, key);
+    }
+
+    // return edited node
+    return node;
+  }
+
+  BSTNode<K,V> putRightmost(BSTNode<K,V> node, BSTNode<K,V> toInsert) {
+    if (node == null) {
+      return toInsert;
+    }
+
+    node.right = putRightmost(node.right, toInsert);
+
+    return node;
+  }
 
   void forEach(BSTNode<K,V> node, BiConsumer<? super K, ? super V> action) {
     if (node == null) return;
