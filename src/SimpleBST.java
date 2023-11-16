@@ -326,8 +326,8 @@ public class SimpleBST<K, V> implements SimpleMap<K, V> {
         checkInit();
         
         BSTNode<K,V> outNode = stack.pop();
-        if (outNode.left != null) stack.push(outNode.left);
         if (outNode.right != null) stack.push(outNode.right);
+        if (outNode.left != null) stack.push(outNode.left);
 
         return outNode;
       } // next();
