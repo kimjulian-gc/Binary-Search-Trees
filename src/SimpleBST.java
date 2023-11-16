@@ -61,8 +61,11 @@ public class SimpleBST<K, V> implements SimpleMap<K, V> {
 
   @Override
   public V set(K key, V value) {
-    this.root = setRecursive(this.root, key, value);
-    return this.cachedValue;
+    // set recursive
+    // this.root = setRecursive(this.root, key, value);
+    // return this.cachedValue;
+
+    return setIterative(key, value);
   } // set(K,V)
 
   @Override
@@ -194,6 +197,41 @@ public class SimpleBST<K, V> implements SimpleMap<K, V> {
 
     // return edited node
     return node;
+  }
+
+  V setIterative (K key, V value) {
+    if (this.root == null) {
+      this.root = new BSTNode<>(key, value);
+      return null;
+    }
+
+    BSTNode<K,V> current = this.root;
+    while (true) {
+      int comp = comparator.compare(key, current.key);
+      if (comp == 0) {
+        this.cachedValue = current.value;
+        current.value = value;
+        return this.cachedValue;
+      }
+      if (comp < 0) {
+        if (current.left != null) {
+          current = current.left;
+          continue;
+        }
+        current.left = new BSTNode<>(key, value);
+        this.size++;
+        return null;
+      }
+      if (comp > 0) {
+        if (current.right != null) {
+          current = current.right;
+          continue;
+        }
+        current.right = new BSTNode<>(key, value);
+        this.size++;
+        return null;
+      }
+    }
   }
 
   /**
